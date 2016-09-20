@@ -26,3 +26,8 @@ usage:
 # dist units should be km, miles, or m
 python weather_stats.py <input file> <output file> <temp units> <dist units>
 ```
+
+sample usage:
+```
+python weather_stats.py input.txt output.txt celsius miles
+```
