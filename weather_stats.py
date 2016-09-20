@@ -126,15 +126,7 @@ def stringify(weather_data):
                                          temperature=temperature,
                                          observatory=observatory)
 
-
-def read_weather_data(filename):
-    with open(filename, 'r') as f:
-        for line in f:
-            weather_data = parse(line)
-            if weather_data:
-                yield weather_data
-
-def read_weather_data2(f):
+def read_weather_data(f):
     for line in f:
         weather_data = parse(line)
         if weather_data:
@@ -151,7 +143,7 @@ def sort_chunks(filename):
         tempf = tempfile.TemporaryFile()
         tempf.write(''.join(map(stringify, weather_list)))
         tempf.seek(0)
-        return read_weather_data2(tempf)
+        return read_weather_data(tempf)
 
     # contains the iterables gotten from sorted chunks inside temp file
     iters = []
@@ -160,7 +152,7 @@ def sort_chunks(filename):
     weather_list = []
 
     with open(filename, 'r') as f:
-        for weather_data in read_weather_data2(f):
+        for weather_data in read_weather_data(f):
             weather_list.append(weather_data)
 
             # writes to temp file and gets an iterable from it if chunk is filled up
@@ -206,7 +198,7 @@ def external_sort(filename):
 
     tempf.seek(0)
 
-    return read_weather_data2(tempf)
+    return read_weather_data(tempf)
 
 def convert_units(weather_data, temp_units, dist_units):
     timestamp, x, y, temperature, observatory = weather_data
